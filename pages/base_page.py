@@ -59,9 +59,8 @@ class BasePage:
         actions = ActionChains(self.driver)
         actions.drag_and_drop(element_A, element_B).perform()
 
-    
     @allure.step("Ввести текст в поле ввода")
     def send_keys_to_input(self, locator, keys, timeout=TIMEOUT):
         element = self.wait_for_element(locator, timeout)
         element.clear()
-        element.send_keys(keys)
+        element.send_keys(keys)  

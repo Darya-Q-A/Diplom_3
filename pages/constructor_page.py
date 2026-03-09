@@ -5,10 +5,10 @@ from locators.constructor_page_locators import ConstructorPageLocators
 from curl import *
 import time
 
+
 class ConstructorPage(BasePage):
     def __init__(self, driver):
         super().__init__(driver)
-        #self.data_generator = OrderDataGenerator()
 
     @allure.step("Кликнуть на кнопку конструктор")
     def click_on_button_costructor(self, main_site):
@@ -60,7 +60,6 @@ class ConstructorPage(BasePage):
         browser_name = self.driver.capabilities.get('browserName', '').lower()
     
         if 'firefox' in browser_name:
-            # Наводим фокус
             actions = ActionChains(self.driver)
             actions.click_and_hold(element).pause(1).move_to_element(target).pause(1).perform()
     
@@ -68,7 +67,7 @@ class ConstructorPage(BasePage):
             self.driver.execute_script("""
             arguments[0].dispatchEvent(new MouseEvent('drop', {bubbles: true}));
             arguments[1].dispatchEvent(new MouseEvent('dragend', {bubbles: true}));
-        """, target, element)
+            """, target, element)
     
             # Отпускаем кнопку мыши
             actions.release().perform()
@@ -91,3 +90,41 @@ class ConstructorPage(BasePage):
         ingredient = self.wait_for_element(locator)
         counter_element = ingredient.find_element(*ConstructorPageLocators.INGREDIENT_COUNTER)
         return int(counter_element.text)
+    
+    @allure.step("кликнуть на кнопку оформления заказа")
+    def click_order_button(self):
+        self.click_on_element(ConstructorPageLocators.ORDER_BUTTON)
+ 
+
+    @allure.step("Дождаться модального окна с подтверждением заказа")
+    def confirm_order(self):
+        self.wait_for_element(ConstructorPageLocators.ORDER_MODAL)
+
+    @allure.step("Получить номер заказа в модальном окне подтверждения заказа")
+    def get_order_number(self):
+        time.sleep(2)
+        element = self.wait_for_element(ConstructorPageLocators.ORDER_NUMBER_IN_MODAL, timeout=20)
+        return int(element.text)
+    
+    @allure.step("Закрыть модальное окно заказа")
+    def close_order_modal(self):
+        close_buttons = self.driver.find_elements(*ConstructorPageLocators.ORDER_MODAL_CLOSE)
+        if close_buttons:
+            self.js_click(ConstructorPageLocators.ORDER_MODAL_CLOSE)
+        time.sleep(1)
+
+    @allure.step("Проверить, что пользователь авторизован")
+    def is_user_logged_in(self):
+        elements = self.driver.find_elements(*ConstructorPageLocators.ORDER_BUTTON)
+        return len(elements) > 0 and elements[0].is_displayed()
+
+    @allure.step("Создать заказ и получить его номер")
+    def create_order_and_get_number(self):
+        self.drag_ingredient_to_basket(ConstructorPageLocators.BUN_FLUORESCENT_LOCATOR)
+        self.drag_ingredient_to_basket(ConstructorPageLocators.SPICY_SAUCE_LOCATOR)
+        self.click_order_button()
+        time.sleep(2)
+        self.confirm_order()
+        order_number = self.get_order_number()
+        self.close_order_modal()
+        return order_number

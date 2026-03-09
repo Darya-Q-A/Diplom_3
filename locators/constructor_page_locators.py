@@ -2,6 +2,7 @@ from selenium.webdriver.common.by import By
 
 
 class ConstructorPageLocators:
+    
     BUTTON_COSTRUCTOR_LOCATOR = (By.CLASS_NAME, 'AppHeader_header__linkText__3q_va') #кнопка конструктор
     BUTTON_ORDER_FEED_LOCATOR = (By.CSS_SELECTOR, 'a.AppHeader_header__link__3D_hX[href="/feed"]') #кнопка лента заказов
     CROSS_INGREDIENT_DETAILS_LOCATOR = (By.CSS_SELECTOR, '.Modal_modal__close__TnseK') #крестик в окне детали ингредиента
@@ -66,3 +67,9 @@ class ConstructorPageLocators:
         (FRUITS_OF_THE_TREE_LOCATOR, 1),
         (MINI_SALAD_LOCATOR, 1),
     ]
+
+    ORDER_BUTTON = (By.XPATH, "//button[text()='Оформить заказ']") #кнопка оформить заказ
+    ORDER_MODAL = (By.CSS_SELECTOR, '.Modal_modal__container__Wo2l_') # Модальное окно подтверждения заказа
+    ORDER_NUMBER_IN_MODAL = (By.XPATH, "//h2[contains(@class, 'text_type_digits-large')]") # Номер заказа в модальном окне (сам номер)
+    ORDER_MODAL_CLOSE = (By.XPATH, "//button[contains(@class, 'Modal_modal__close_modified')]") # крестик для закрытия окна с подтверждением заказа
+    ORDER_OVERLAY = (By.CSS_SELECTOR, '.Modal_modal_overlay__x2ZCr') # для оверлея

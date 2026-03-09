@@ -1,5 +1,3 @@
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.wait import WebDriverWait
 import pytest
 from locators.constructor_page_locators import ConstructorPageLocators
 from pages.constructor_page import ConstructorPage
@@ -14,7 +12,7 @@ class TestConstructor:
     @allure.description("Происходит переход ")
     def test_click_on_button_costructor(self, driver):
         constructor_page = ConstructorPage(driver)
-        driver.get(order_feed) #сначала перейдем на ленту заказов, чтобы проверить, что по клику точно переходит на констуктор
+        driver.get(order_feed) #сначала перейдем на ленту заказов, чтобы проверить, что по клику точно переходит на конструктор
         constructor_page.click_on_button_costructor(main_site)
         constructor_page.wait_for_url(main_site)
         assert driver.current_url == main_site, "что-то пошло не так, конструктор отменяется"
