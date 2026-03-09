@@ -64,8 +64,7 @@ class ConstructorPageLocators:
         (BIO_CUTLET_LOCATOR, 1),
         (FILLET_LOCATOR, 1),
         (MINERAL_RINGS_LOCATOR, 1),
-        (FRUITS_OF_THE_TREE_LOCATOR, 1),
-        (MINI_SALAD_LOCATOR, 1),
+        (FRUITS_OF_THE_TREE_LOCATOR, 1)
     ]
 
     ORDER_BUTTON = (By.XPATH, "//button[text()='Оформить заказ']") #кнопка оформить заказ
