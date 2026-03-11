@@ -3,11 +3,11 @@ import pytest
 from pages.constructor_page import ConstructorPage
 from pages.order_feed_page import OrderFeedPage
 from curl import *
-import time
+
 
 
 class TestOrderFeed:
-    
+   
     @allure.title("Счётчик выполненных заказов за всё время увеличивается")
     def test_total_orders_counter_increases(self, driver, authorization_user):
         order_feed_page = OrderFeedPage(driver)
@@ -17,7 +17,6 @@ class TestOrderFeed:
         constructor_page = ConstructorPage(driver)
         order_number = constructor_page.create_order_and_get_number()
         driver.get(order_feed)
-        time.sleep(2)
         final_counter = order_feed_page.get_total_orders_count()
     
         assert final_counter > initial_counter, f'ожидалось увеличение счетчика'
@@ -32,7 +31,6 @@ class TestOrderFeed:
         constructor_page = ConstructorPage(driver)
         order_number = constructor_page.create_order_and_get_number()
         driver.get(order_feed)
-        time.sleep(2)
         final_counter = order_feed_page.get_today_orders_count()
 
         assert final_counter > initial_counter, f'Счётчик за сегодня не увеличился'   
@@ -42,6 +40,6 @@ class TestOrderFeed:
     def test_order_number_in_progress(self, driver, authorization_user, created_order):
         order_feed_page = OrderFeedPage(driver)
         driver.get(order_feed)
-        time.sleep(2)
+        order_feed_page.wait_for_order_in_progress(created_order)
         assert order_feed_page.is_order_in_progress(created_order), f'Номер заказа {created_order} не появился в разделе «В работе»'
             

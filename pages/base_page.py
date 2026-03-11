@@ -6,7 +6,7 @@ from selenium.webdriver.common.by import By
 from locators.constructor_page_locators import ConstructorPageLocators
 
 
-TIMEOUT = 10
+TIMEOUT = 20
 
 class BasePage:
     def __init__(self, driver):
@@ -14,7 +14,6 @@ class BasePage:
 
     @allure.step("Кликнуть на элемент через JavaScript (обход перекрытий)")
     def js_click(self, locator):
-        """Кликает на элемент через JavaScript - игнорирует перекрытия"""
         element = self.wait_for_element(locator)
         self.driver.execute_script("arguments[0].click();", element)
 
@@ -64,3 +63,22 @@ class BasePage:
         element = self.wait_for_element(locator, timeout)
         element.clear()
         element.send_keys(keys)  
+
+    @allure.step("Выполнить drag-and-drop для Firefox")
+    def drag_and_drop_with_js(self, element, target):
+        actions = ActionChains(self.driver)
+        actions.click_and_hold(element).pause(1).move_to_element(target).pause(1).release().perform()
+        self.driver.execute_script("""
+            arguments[0].dispatchEvent(new MouseEvent('drop', {bubbles: true}));
+            arguments[1].dispatchEvent(new MouseEvent('dragend', {bubbles: true}));
+        """, target, element)
+
+    @allure.step("Выполнить обычный drag-and-drop (для Chrome)")
+    def drag_and_drop_standard(self, element, target):
+        actions = ActionChains(self.driver)
+        actions.drag_and_drop(element, target).perform()     
+      
+    @allure.step("Подождать выполнения условия")
+    def wait_for_condition(self, condition, timeout=TIMEOUT):  
+        return WebDriverWait(self.driver, timeout).until(condition)    
+           

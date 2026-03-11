@@ -3,7 +3,6 @@ from locators.constructor_page_locators import ConstructorPageLocators
 from pages.constructor_page import ConstructorPage
 from curl import *
 import allure
-import time
 
 
 class TestConstructor:
@@ -15,7 +14,7 @@ class TestConstructor:
         driver.get(order_feed) #сначала перейдем на ленту заказов, чтобы проверить, что по клику точно переходит на конструктор
         constructor_page.click_on_button_costructor(main_site)
         constructor_page.wait_for_url(main_site)
-        assert driver.current_url == main_site, "что-то пошло не так, конструктор отменяется"
+        assert driver.current_url == main_site, "что-то пошло не так, конструктор отменяется"   
 
     @allure.title("Тест на переход по клику на Ленту заказов")
     @allure.description("Происходит переход ")
@@ -32,7 +31,6 @@ class TestConstructor:
         driver.get(main_site)
     
         constructor_page.click_on_ingredient(ingredient_locator)
-        time.sleep(1)  # небольшая пауза для гарантии
     
         assert constructor_page.is_modal_open(), "Окно не открылось"
         modal_text = constructor_page.get_text_in_modal_window()   
@@ -50,9 +48,9 @@ class TestConstructor:
         driver.get(main_site)
         constructor_page.click_on_ingredient(ingredient_locator)
         constructor_page.wait_modal_window()
-        constructor_page.close_modal_window()
+        constructor_page.close_modal_window()  
 
-        assert constructor_page.is_close_modal_window(), "Модальное окно с деталями ингредиентов не закрыто" 
+        assert constructor_page.is_close_modal_window(), "Модальное окно с деталями ингредиентов не закрыто"
    
     @allure.title("При добавлении ингредиента счётчик увеличивается")
     @pytest.mark.parametrize("ingredient_locator, expected_increment", ConstructorPageLocators.INGREDIENT_WITH_INCREMENT)
@@ -65,4 +63,4 @@ class TestConstructor:
         new_counter = constructor_page.get_ingredient_counter(ingredient_locator)
     
         assert new_counter - initial_counter == expected_increment, \
-            f"Счётчик увеличился на {new_counter - initial_counter}, ожидалось {expected_increment}"
+            f"Счётчик увеличился на {new_counter - initial_counter}, ожидалось {expected_increment}"  

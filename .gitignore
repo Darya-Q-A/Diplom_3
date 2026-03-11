@@ -27,7 +27,6 @@ build/
 Thumbs.db
 
 #Прочее
-*.txt
 __pycache__
 .pytest_cache
 tests/__pycache__/
