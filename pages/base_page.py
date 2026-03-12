@@ -82,3 +82,6 @@ class BasePage:
     def wait_for_condition(self, condition, timeout=TIMEOUT):  
         return WebDriverWait(self.driver, timeout).until(condition)    
            
+    @allure.step("Найти все элементы по локатору")
+    def find_elements(self, locator):
+        return self.driver.find_elements(*locator)

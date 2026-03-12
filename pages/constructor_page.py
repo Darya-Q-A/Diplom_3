@@ -28,7 +28,7 @@ class ConstructorPage(BasePage):
     
     @allure.step("Проверить, открыто ли модальное окно")
     def is_modal_open(self):
-        elements = self.driver.find_elements(*ConstructorPageLocators.INGREDIENT_DETAILS_LOCATOR)        
+        elements = self.find_elements(ConstructorPageLocators.INGREDIENT_DETAILS_LOCATOR)
         return len(elements) > 0 and elements[0].is_displayed()
 
     @allure.step("Ожидание загрузки контейнера с ингредиентами")
@@ -101,13 +101,13 @@ class ConstructorPage(BasePage):
     
     @allure.step("Закрыть модальное окно заказа")
     def close_order_modal(self):
-        close_buttons = self.driver.find_elements(*ConstructorPageLocators.ORDER_MODAL_CLOSE)
+        close_buttons = self.find_elements(ConstructorPageLocators.ORDER_MODAL_CLOSE)
         if close_buttons:
             self.js_click(ConstructorPageLocators.ORDER_MODAL_CLOSE)
 
     @allure.step("Проверить, что пользователь авторизован")
     def is_user_logged_in(self):
-        elements = self.driver.find_elements(*ConstructorPageLocators.ORDER_BUTTON)
+        elements = self.find_elements(ConstructorPageLocators.ORDER_BUTTON)
         return len(elements) > 0 and elements[0].is_displayed()
 
     @allure.step("Создать заказ и получить его номер")
